@@ -1,0 +1,17 @@
+[package]
+name = "sazcat"
+version = "0.0.1"
+authors = ["Andrei Ciprian Dobre <andrei_ciprian.dobre@cti.pub.ro>"]
+
+[dependencies]
+colored = "*"
+zip = "*"
+
+[lib]
+name = "sazcat"
+path = "src/lib.rs"
+
+[[bin]]
+name = "sazcat"
+path = "src/bin.rs"
+
