@@ -1,12 +1,17 @@
 #!/usr/bin/python3.5
 
 from zipfile import ZipFile
+import os, os.path
 import argparse
 
 class Sazcat:
 
+    DST = "/tmp/sazcat/"
+    ID = 0
+
     def __init__(self, files):
         self.files = files
+        self.dir_map = {}
 
     def list_files(self):
         for file in self.files:
@@ -14,11 +19,33 @@ class Sazcat:
                 # print(saz_file.namelist())
                 print(saz_file.printdir())
 
+    def __current_id(self):
+        self.ID += 1
+        return self.ID
+
     def concatenate(self):
+        self.__unpack()
+        self.__merge()
+        self.__repack()
+
+    def __unpack(self):
         for file in self.files:
             with ZipFile(file) as saz_file:
-                pass
+                file_name = file.split('/')[-1]
+                self.dir_map[self.ID] = file_name
+                self.ID += 1
+                saz_file.extractall(self.DST + file_name)
 
+    def __merge(self):
+        total_files = 0
+        for dir_id in range(0, self.ID):
+            print(os.listdir(self.DST + self.dir_map[dir_id] + '/raw/'))
+
+
+        #     total_files += len(os.listdir(self.dir_map[dir_id]))
+
+    def __repack(self):
+        pass
 
 def main():
     parser = argparse.ArgumentParser()
@@ -30,9 +57,8 @@ def main():
     cat = Sazcat(files=args.filenames)
     if args.list_display:
         cat.list_files()
+    cat.concatenate()
     print(args.outputfile)
 
 if __name__ == "__main__":
     main()
-
-
