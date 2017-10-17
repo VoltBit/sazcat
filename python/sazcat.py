@@ -2,6 +2,8 @@
 '''
 Script for concatenating .saz files (Fiddler specific zip archives).
 WARNING: the script currently does not support captures with WebSocket messages.
+
+Following: http://fiddler.wikidot.com/saz-files
 '''
 
 from zipfile import ZipFile
@@ -20,6 +22,7 @@ class Sazcat:
     C = 0
     M = 1
     S = 2
+    W = 3
 
     def __init__(self, files, output='out.saz'):
         self.files = files
