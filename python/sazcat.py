@@ -14,8 +14,8 @@ import time
 
 class Sazcat:
 
-    DST = "/tmp/sazcat/"
-    NEW = "/tmp/sazcat/output/"
+    DST = os.path.expanduser("~/sazcat/")
+    NEW = os.path.expanduser("~/sazcat/output/")
     NEW_SAZ = DST + "out"
     META_FORMAT = "[Content_Types].xml"
     ID = 0
