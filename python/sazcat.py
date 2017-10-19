@@ -2,6 +2,7 @@
 '''
 Script for concatenating .saz files (Fiddler specific zip archives).
 WARNING: the script currently does not support captures with WebSocket messages.
+Currently a Linux only implementation.
 
 Following: http://fiddler.wikidot.com/saz-files
 '''
