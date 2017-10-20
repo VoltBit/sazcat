@@ -12,6 +12,9 @@ import os, os.path
 import argparse
 import shutil
 import time
+import json
+import colorama
+import subprocess
 
 class Sazcat:
 
@@ -19,15 +22,17 @@ class Sazcat:
     NEW = os.path.expanduser("~/sazcat/output/")
     NEW_SAZ = DST + "out"
     META_FORMAT = "[Content_Types].xml"
+    confidential_strings = "/home/adobre/scripts/confidential_strings.json"
     ID = 0
     C = 0
     M = 1
     S = 2
     W = 3
 
-    def __init__(self, files, output='out.saz'):
+    def __init__(self, files, check, output='out.saz'):
         self.files = files
         self.dir_map = {}
+        self.do_check = check
 
     def list_files(self):
         for file in self.files:
@@ -58,6 +63,16 @@ class Sazcat:
         self.capture_files /= 3
         print("Total files: ", self.capture_files)
 
+    def __string_check(self):
+        pass
+        # with open(self.confidential_strings) as secret:
+        #     data = json.load(secret)
+        #     print(data["strings"])
+        #     for string in data["strings"]:
+        #         print("grep -rn " + string + " " + str(os.getcwd()))
+        #         subprocess.Popen("grep -rn " + string + " " + str(os.getcwd()),
+        #             stdin=subprocess.PIPE, stdout=subprocess.PIPE, shell=True)
+
     '''
     Bring together all files form the 'raw' directories and rename them.
     '''
@@ -78,6 +93,8 @@ class Sazcat:
         for dir_id in range(0, self.ID):
             current_path = self.DST + self.dir_map[dir_id] + '/raw/'
             os.chdir(current_path)
+            if self.do_check:
+                self.__string_check()
             fl = sorted(os.listdir(current_path))
             sessions = [fl[i:i+3] for i in range(0, len(fl), 3)]
             for session in sessions:
@@ -108,10 +125,12 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('filenames', type=str, nargs='+', help="list of space sperated saz file names")
     parser.add_argument('-l', '--list', dest='list_display', action='store_true')
+    parser.add_argument('-c', '--check', dest='check_strings', action='store_true')
     parser.add_argument('-o', '--outputfile', type=str, default='out.saz', help="optional output file name, defaults to out.saz")
-    parser.set_defaults(list_display=False)
+
+    parser.set_defaults(list_display=False, check_strings=False)
     args = parser.parse_args()
-    cat = Sazcat(files=args.filenames, output=args.outputfile)
+    cat = Sazcat(files=args.filenames, output=args.outputfile, check=args.check_strings)
     if args.list_display:
         cat.list_files()
     cat.concatenate()
