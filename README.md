@@ -13,4 +13,3 @@ List contents:
 python sazcat.py -l file.saz
 ```
 
-Default result file is in /tmp/sazcat/out.saz
