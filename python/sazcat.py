@@ -120,6 +120,8 @@ class Sazcat:
         os.chdir(self.NEW + 'raw/')
         shutil.make_archive(self.NEW_SAZ, 'zip', self.NEW)
         os.rename(self.NEW_SAZ + '.zip', self.NEW_SAZ + '.saz')
+        shutil.rmtree(self.NEW, ignore_errors=True)
+
 
 def main():
     parser = argparse.ArgumentParser()
