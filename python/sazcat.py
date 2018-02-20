@@ -18,9 +18,11 @@ import subprocess
 
 class Sazcat:
 
-    DST = os.path.expanduser("~/sazcat/")
-    NEW = os.path.expanduser("~/sazcat/output/")
-    NEW_SAZ = DST + "out"
+    # DST = os.path.expanduser("~/sazcat/")
+    DST = os.path.abspath('.')
+    # NEW = os.path.expanduser("~/sazcat/output/")
+    NEW = os.path.abspath('.') + "/output/"
+    NEW_SAZ = DST + "/out"
     META_FORMAT = "[Content_Types].xml"
     confidential_strings = "/home/adobre/scripts/confidential_strings.json"
     ID = 0
@@ -119,6 +121,7 @@ class Sazcat:
             pass
         os.chdir(self.NEW + 'raw/')
         shutil.make_archive(self.NEW_SAZ, 'zip', self.NEW)
+        print("Result at: ", self.NEW)
         os.rename(self.NEW_SAZ + '.zip', self.NEW_SAZ + '.saz')
         shutil.rmtree(self.NEW, ignore_errors=True)
 
